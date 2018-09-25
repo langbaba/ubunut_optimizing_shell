@@ -27,5 +27,5 @@ ubuntu系统部署优化脚本
 * Oracle JDK8u181 安装
 * 安装Maven环境
 * 安装docker环境
-
+* 安装node v10.9.0环境
 

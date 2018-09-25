@@ -10,6 +10,31 @@ Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
 #————————————开发环境————————————\
+# 10 安装node环境
+install_node(){
+   read -p "输入node安装路径  :" nodePath
+   mkdir -fR "${nodePath}"
+   mkdir -p "${nodePath}"
+   cd "${nodePath}"
+   rm node-*.tar.gz*
+
+   axel -n 5  https://npm.taobao.org/mirrors/node/v10.9.0/node-v10.9.0-linux-x64.tar.gz
+   tar -zxvf node-v10.9.0-linux-x64.tar.gz
+   rm node-v10.9.0-linux-x64.tar.gz
+
+   node_home="${nodePath}/node-v10.9.0-linux-x64"
+   sed -i '/export NODE_HOME/d' ~/.profile
+
+   echo "export NODE_HOME=${node_home}
+export PATH=${node_home}/bin:\$PATH
+">> ~/.profile
+
+  /bin/sh -c "sudo rm -f /usr/bin/node && sudo ln -s \"${node_home}/bin/node\" /usr/bin/node"
+
+  source ~/.profile
+  npm install -g cnpm --registry=https://registry.npm.taobao.org
+}
+
 #9 安装docker
 install_docker(){
   curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
@@ -240,9 +265,28 @@ install_openSSH(){
 #————————————内核管理————————————
 # 0 内核升级
 Update_LinuxKenrel(){
+    #替换源
+    Codename=$(lsb_release -c --short)
+    cp /etc/apt/sources.list /etc/apt/sources.list.bak
+    echo "# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename} main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename} main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-updates main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-backports main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-security main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-security main restricted universe multiverse
+
+# 预发布软件源，不建议启用
+# deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-proposed main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-proposed main restricted universe multiverse
+    " > /etc/apt/sources.list
+
     apt-get install -f
     apt-get update
-    apt-get install axel -y
+    apt-get install apt -y
+    apt-get install apparmor openssh-server  apt apt-transport-https apt-utils base-files dnsutils dpkg  lshw mount openssl udev ubuntu-release-upgrader-core uuid-runtime wget axel unzip -y
   
       mkdir bbr 
        cd bbr
@@ -253,7 +297,13 @@ Update_LinuxKenrel(){
           
           kernel_version="4.18.8"
           apt-get update
-          apt-get install libssl-dev -y
+          # apt-get install libssl-dev -y
+          # apt-get install aptitude -y
+          # aptitude install libssl-dev -y
+          wget http://kr.archive.ubuntu.com/ubuntu/pool/main/l/linux-base/linux-base_4.5ubuntu1~16.04.1_all.deb
+          dpkg -i linux-base*.deb
+          wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb
+          dpkg -i libssl1.1*.deb
           axel -n 10 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808_4.18.8-041808.201809150431_all.deb
           axel -n 10 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
           axel -n 10 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-image-unsigned-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
@@ -284,9 +334,12 @@ Update_LinuxKenrel(){
 #开始菜单
 start_menu(){
 clear
+Version=$(lsb_release -r --short)
+Codename=$(lsb_release -c --short)
+OSArch=$(uname -m)
 echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- coolzlay | blog.csdn.net/zhangjianying --
-  
+ 当前系统:  ${Codename} ${Version} ${OSArch}
 # ————————————内核管理(需要root)————————————
 #  ${Green_font_prefix}[0].${Font_color_suffix} 升级Linux Kernel 4.18.8 内核
 # ————————————网络管理(需要root)————————————
@@ -303,6 +356,7 @@ echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[v${s
 #  ${Green_font_prefix}[7].${Font_color_suffix} Oracle JDK8u181 安装
 #  ${Green_font_prefix}[8].${Font_color_suffix} 安装Maven环境
 #  ${Green_font_prefix}[9].${Font_color_suffix} 安装docker环境
+#  ${Green_font_prefix}[10].${Font_color_suffix} 安装node v10.9.0环境
 ————————————————————————————————"
 
 
@@ -340,6 +394,9 @@ read -p " 请输入对应操作字符 :" num
       ;;
       12)
       opt_vim
+      ;;
+      10)
+      install_node
       ;;
       9)
       install_docker
