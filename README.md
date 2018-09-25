@@ -1,0 +1,2 @@
+# ubunut_optimizing_shell
+ubuntu系统部署优化脚本
