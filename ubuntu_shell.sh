@@ -10,6 +10,13 @@ Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
 #————————————开发环境————————————\
+# 15 docker环境下的redis
+  install_docker_redis(){
+    docker pull bitnami/redis
+    echo -e " ----------------------   运行以下命令启动    --------------------------------"
+    echo -e "${info} docker run --name redis -e REDIS_PASSWORD=password123 bitnami/redis:latest"
+    echo -e "${info} 更多命令参考 : https://hub.docker.com/r/bitnami/redis/"
+  }
 # 10 安装node环境
 install_node(){
    read -p "输入node安装路径  :" nodePath
@@ -37,7 +44,7 @@ export PATH=${node_home}/bin:\$PATH
 
 #9 安装docker
 install_docker(){
-  curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+  curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun 
 }
 
 
@@ -304,10 +311,10 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-security main restr
           dpkg -i linux-base*.deb
           wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb
           dpkg -i libssl1.1*.deb
-          axel -n 10 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808_4.18.8-041808.201809150431_all.deb
-          axel -n 10 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
-          axel -n 10 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-image-unsigned-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
-          axel -n 10 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-modules-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808_4.18.8-041808.201809150431_all.deb
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-image-unsigned-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-modules-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
 
          dpkg -i linux-*.deb
 		     cd .. && rm -rf bbr
@@ -337,7 +344,7 @@ clear
 Version=$(lsb_release -r --short)
 Codename=$(lsb_release -c --short)
 OSArch=$(uname -m)
-echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[${sh_ver}]${Font_color_suffix}
   -- coolzlay | blog.csdn.net/zhangjianying --
  当前系统:  ${Codename} ${Version} ${OSArch}
 # ————————————内核管理(需要root)————————————
@@ -352,12 +359,13 @@ echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[v${s
 #  ${Green_font_prefix}[5].${Font_color_suffix} 禁止系统自动升级内核(高危漏洞也不自动升级)
 #  ${Green_font_prefix}[6].${Font_color_suffix} 中文字体安装(支持java环境下图片输出中文)
 #  ${Green_font_prefix}[12].${Font_color_suffix} 优化VIM
+#  ${Green_font_prefix}[9].${Font_color_suffix} 安装docker环境
 # ————————————开发环境(不需要root)————————————
 #  ${Green_font_prefix}[7].${Font_color_suffix} Oracle JDK8u181 安装
 #  ${Green_font_prefix}[8].${Font_color_suffix} 安装Maven环境
-#  ${Green_font_prefix}[9].${Font_color_suffix} 安装docker环境
 #  ${Green_font_prefix}[10].${Font_color_suffix} 安装node v10.9.0环境
-————————————————————————————————"
+#  ${Green_font_prefix}[15].${Font_color_suffix} 安装 docker环境下的redis
+# ————————————————————————————————"
 
 
 read -p " 请输入对应操作字符 :" num
@@ -394,6 +402,9 @@ read -p " 请输入对应操作字符 :" num
       ;;
       12)
       opt_vim
+      ;;
+      15)
+      install_docker_redis
       ;;
       10)
       install_node
