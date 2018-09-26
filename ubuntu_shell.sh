@@ -10,6 +10,46 @@ Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
 #————————————开发环境————————————\
+# 16 docker环境下的alimysql
+install_docker_AliMysql(){
+  docker pull tekintian/alisql
+  read -p "输入aliMysql数据库存储路径  :" mySqlDataPath
+
+   mkdir -p "${mySqlDataPath}/data"
+   mkdir -p "${mySqlDataPath}/logs"
+
+   echo "[mysqld]
+basedir=/usr/local/mysql
+datadir=/data/mysql/data
+user=mysql
+port =3306
+max_connections = 1650
+table_open_cache = 2000
+lower_case_table_names = 1
+event_scheduler=ON
+wait_timeout = 86400
+sort_buffer_size = 848KB
+read_buffer_size = 848KB
+read_rnd_buffer_size = 432KB
+join_buffer_size = 432KB
+net_buffer_length = 16K
+thread_cache_size = 100
+skip_name_resolve
+symbolic-links=0
+
+[mysqld_safe]
+
+[client]
+   " > "${mySqlDataPath}/my.cnf"
+
+   echo -e " ----------------------   运行以下命令启动    --------------------------------"
+   echo -e "${info} docker run   -it -d -p 13306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v ${mySqlDataPath}/my.cnf:/usr/local/mysql/etc/my.cnf  -v ${mySqlDataPath}/data:/data/mysql/data -v ${mySqlDataPath}/logs:/data/mysql/log tekintian/alisql"
+   echo -e " ----------------------   启动后到docker中运行一下命令开启远程访问    --------------------------------"
+   echo -e " grant all PRIVILEGES on *.* to root@'%'  identified by '123456';"
+   echo -e " flush privileges; "
+}
+
+
 # 15 docker环境下的redis
   install_docker_redis(){
     docker pull bitnami/redis
@@ -365,6 +405,7 @@ echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[${sh
 #  ${Green_font_prefix}[8].${Font_color_suffix} 安装Maven环境
 #  ${Green_font_prefix}[10].${Font_color_suffix} 安装node v10.9.0环境
 #  ${Green_font_prefix}[15].${Font_color_suffix} 安装 docker环境下的redis
+#  ${Green_font_prefix}[16].${Font_color_suffix} 安装 docker环境下的ALiMysql
 # ————————————————————————————————"
 
 
@@ -405,6 +446,9 @@ read -p " 请输入对应操作字符 :" num
       ;;
       15)
       install_docker_redis
+      ;;
+      16)
+      install_docker_AliMysql
       ;;
       10)
       install_node
