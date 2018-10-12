@@ -342,7 +342,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-security main restr
           # axel -n 10   "http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15.18/linux-headers-${kernel_version}-041518-generic_4.15.18-041518.201804190330_amd64.deb"
           # axel -n 10   "http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15.18/linux-image-${kernel_version}-041518-generic_4.15.18-041518.201804190330_amd64.deb"
           
-          kernel_version="4.18.8"
+          kernel_version="4.18.13"
           apt-get update
           # apt-get install libssl-dev -y
           # apt-get install aptitude -y
@@ -351,10 +351,12 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-security main restr
           dpkg -i linux-base*.deb
           wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb
           dpkg -i libssl1.1*.deb
-          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808_4.18.8-041808.201809150431_all.deb
-          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-headers-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
-          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-image-unsigned-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
-          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.8/linux-modules-4.18.8-041808-generic_4.18.8-041808.201809150431_amd64.deb
+
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.13/linux-headers-4.18.13-041813_4.18.13-041813.201810100332_all.deb
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.13/linux-headers-4.18.13-041813-generic_4.18.13-041813.201810100332_amd64.deb
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.13/linux-image-unsigned-4.18.13-041813-generic_4.18.13-041813.201810100332_amd64.deb
+          axel -n 5 http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.18.13/linux-modules-4.18.13-041813-generic_4.18.13-041813.201810100332_amd64.deb
+
 
          dpkg -i linux-*.deb
 		     cd .. && rm -rf bbr
@@ -388,7 +390,7 @@ echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[${sh
   -- coolzlay | blog.csdn.net/zhangjianying --
  当前系统:  ${Codename} ${Version} ${OSArch}
 # ————————————内核管理(需要root)————————————
-#  ${Green_font_prefix}[0].${Font_color_suffix} 升级Linux Kernel 4.18.8 内核
+#  ${Green_font_prefix}[0].${Font_color_suffix} 升级Linux Kernel 4.18.13 内核
 # ————————————网络管理(需要root)————————————
 #  ${Green_font_prefix}[1].${Font_color_suffix} 开启 TCP - BBR 算法 
 #  ${Green_font_prefix}[2].${Font_color_suffix} 修改DNS为114与阿里公共DNS 223.5.5.5
