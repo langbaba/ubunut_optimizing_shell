@@ -15,7 +15,7 @@ ubuntu系统部署优化脚本
 
 ### 包含内容
 
-* 升级Linux Kernel 4.18.8 内核
+* 升级Linux Kernel  4.18.13 内核
 * 开启 TCP - BBR 算法 
 * 修改DNS为114与阿里公共DNS 223.5.5.5
 * 安装openSSH 7.8p1
