@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
+github="aaa"
 sh_ver="v1.0.0"
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
@@ -54,7 +54,7 @@ symbolic-links=0
   install_docker_redis(){
     docker pull bitnami/redis
     echo -e " ----------------------   运行以下命令启动    --------------------------------"
-    echo -e "${info} docker run --name redis -e REDIS_PASSWORD=password123 bitnami/redis:latest"
+    echo -e "${info} docker run -d -p 16379:6379 --name redis -e REDIS_PASSWORD=password123 bitnami/redis:latest"
     echo -e "${info} 更多命令参考 : https://hub.docker.com/r/bitnami/redis/"
   }
 # 10 安装node环境
@@ -123,13 +123,13 @@ read -p "输入JDK安装路径  :" jdkPath
 mkdir -fR "${jdkPath}"
 mkdir -p "${jdkPath}"
 cd "${jdkPath}"
-wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.tar.gz
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u191-b12/2787e4a523244c269598db4e85c51e0c/jdk-8u191-linux-x64.tar.gz
 
 tar -zxvf jdk-*.tar.gz
 rm -f jdk-*.tar.gz
 
 #配置环境变量
-jdk_home="${jdkPath}/jdk1.8.0_181"
+jdk_home="${jdkPath}/jdk1.8.0_191"
 sed -i '/export JAVA_HOME/d' ~/.profile
 sed -i '/export CLASSPATH/d' ~/.profile
 sed -i '/export PATH=${jdkPath}/d' ~/.profile
@@ -403,7 +403,7 @@ echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[${sh
 #  ${Green_font_prefix}[12].${Font_color_suffix} 优化VIM
 #  ${Green_font_prefix}[9].${Font_color_suffix} 安装docker环境
 # ————————————开发环境(不需要root)————————————
-#  ${Green_font_prefix}[7].${Font_color_suffix} Oracle JDK8u181 安装
+#  ${Green_font_prefix}[7].${Font_color_suffix} Oracle JDK8u191 安装
 #  ${Green_font_prefix}[8].${Font_color_suffix} 安装Maven环境
 #  ${Green_font_prefix}[10].${Font_color_suffix} 安装node v10.9.0环境
 #  ${Green_font_prefix}[15].${Font_color_suffix} 安装 docker环境下的redis
