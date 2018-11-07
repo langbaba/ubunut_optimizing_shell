@@ -10,6 +10,18 @@ Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
 #————————————开发环境————————————\
+# 17 设置交换分区环境
+
+  set_swapFile(){
+    read -p "输入交换分区路径  :"  swapFilePath
+    sudo dd if=/dev/zero of="${swapFilePath}" bs=1024 count=8000000
+    sudo chmod 600 "${swapFilePath}"
+    sudo mkswap "${swapFilePath}"
+    sudo swapon "${swapFilePath}"
+    echo "${swapFilePath}   none    swap    sw    0   0">>/etc/fstab
+  }
+
+
 # 16 docker环境下的alimysql
 install_docker_AliMysql(){
   docker pull tekintian/alisql
@@ -402,6 +414,7 @@ echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[${sh
 #  ${Green_font_prefix}[6].${Font_color_suffix} 中文字体安装(支持java环境下图片输出中文)
 #  ${Green_font_prefix}[12].${Font_color_suffix} 优化VIM
 #  ${Green_font_prefix}[9].${Font_color_suffix} 安装docker环境
+#  ${Green_font_prefix}[17].${Font_color_suffix} 设置交换分区文件8G
 # ————————————开发环境(不需要root)————————————
 #  ${Green_font_prefix}[7].${Font_color_suffix} Oracle JDK8u191 安装
 #  ${Green_font_prefix}[8].${Font_color_suffix} 安装Maven环境
@@ -457,6 +470,9 @@ read -p " 请输入对应操作字符 :" num
       ;;
       9)
       install_docker
+      ;;
+       17)
+      set_swapFile
       ;;
       *)
       clear
