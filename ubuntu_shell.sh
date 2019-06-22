@@ -48,6 +48,7 @@ net_buffer_length = 16K
 thread_cache_size = 100
 skip_name_resolve
 symbolic-links=0
+default-time_zone = '+8:00'
 
 [mysqld_safe]
 
@@ -96,7 +97,7 @@ export PATH=${node_home}/bin:\$PATH
 
 #9 安装docker
 install_docker(){
-  curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun 
+  curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 }
 
 
@@ -284,7 +285,7 @@ root hard  noproc  1000000">/etc/security/limits.conf
 enable_bbr(){
   sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
   sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
-  
+
   echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 	sysctl -p
@@ -311,7 +312,7 @@ install_openSSH(){
   rm openssh-7.8p1.tar.gz
   cd openssh-7.8p1
   cp /etc/ssh/sshd_config ./sshd_config_bak
-  ./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-pam --with-md5-passwords 
+  ./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-pam --with-md5-passwords
   make -j4 && make install
   mv /usr/sbin/sshd /usr/sbin/sshd.old
   cp sshd /usr/sbin
@@ -346,14 +347,14 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ ${Codename}-security main restr
     apt-get update
     apt-get install apt -y
     apt-get install apparmor openssh-server  apt apt-transport-https apt-utils base-files dnsutils dpkg  lshw mount openssl udev ubuntu-release-upgrader-core uuid-runtime wget axel unzip -y
-  
-      mkdir bbr 
+
+      mkdir bbr
        cd bbr
             # kernel_version="4.15.18"
           # axel -n 10  "http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15.18/linux-headers-${kernel_version}-041518_4.15.18-041518.201804190330_all.deb"
           # axel -n 10   "http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15.18/linux-headers-${kernel_version}-041518-generic_4.15.18-041518.201804190330_amd64.deb"
           # axel -n 10   "http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.15.18/linux-image-${kernel_version}-041518-generic_4.15.18-041518.201804190330_amd64.deb"
-          
+
           kernel_version="4.18.13"
           apt-get update
           # apt-get install libssl-dev -y
@@ -404,7 +405,7 @@ echo && echo -e " ubuntu server 一键安装管理脚本 ${Red_font_prefix}[${sh
 # ————————————内核管理(需要root)————————————
 #  ${Green_font_prefix}[0].${Font_color_suffix} 升级Linux Kernel 4.18.13 内核
 # ————————————网络管理(需要root)————————————
-#  ${Green_font_prefix}[1].${Font_color_suffix} 开启 TCP - BBR 算法 
+#  ${Green_font_prefix}[1].${Font_color_suffix} 开启 TCP - BBR 算法
 #  ${Green_font_prefix}[2].${Font_color_suffix} 修改DNS为114与阿里公共DNS 223.5.5.5
 #  ${Green_font_prefix}[11].${Font_color_suffix} 安装openSSH 7.8p1
 # ————————————系统优化(需要root)————————————
